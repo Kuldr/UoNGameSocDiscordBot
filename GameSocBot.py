@@ -1,10 +1,16 @@
 import discord
 import asyncio
 from login import TOKEN
+import datetime
 
-# Constant-ish :P
+#===============================CONSTANT-ISH====================================
+# Misc
 MESSAGE_TO_REACT_TO_ID = 490842813517529109
-GUILD_ID = 481147770254786561
+GAMESOC_GUILD_ID = 481147770254786561
+EGM_COUNTER_CHANNEL_ID = 490853584347594764
+EGM_COUNTER_MESSAGE_ID = 490854630927106049
+EGM_DAYS_MESSAGE_ID = 490860539950530570
+# Emoji IDs
 OVERWATCH_EMOJI_ID = 490191693111492628
 LEAGUE_EMOJI_ID = 1
 FORTNITE_EMOJI_ID = 1
@@ -18,6 +24,7 @@ RAINBOW_SIX_EMOJI_ID = 1
 PUBG_EMOJI_ID = 1
 MTG_EMOJI_ID = 1
 WARFRAME_EMOJI_ID = 1
+# Role IDs
 OVERWATCH_ROLE_ID = 1
 LEAGUE_ROLE_ID = 1
 FORTNITE_ROLE_ID = 1
@@ -34,7 +41,6 @@ WARFRAME_ROLE_ID = 1
 COMMITTEE_ROLE_ID = 482211682865774592
 
 #TODO CHECK WHICH ROLES ALREADY HAVE AN ICON
-#TODO CLEAR REACTIONS IF TOO MANY; WHAT IS TOO MANY
 
 client = discord.Client()
 
@@ -53,7 +59,7 @@ client = discord.Client()
 #===============================================================================
 
 async def add_role_from_id(member, role_id):
-    roles = client.get_guild(GUILD_ID).roles
+    roles = client.get_guild(GAMESOC_GUILD_ID).roles
     for i in roles:
         if i.id == role_id:
             await member.add_roles(i)
@@ -122,9 +128,6 @@ async def on_raw_reaction_add(payload):
             await message.remove_reaction(payload.emoji, member)
             print("Reaction not in list; Removing reaction")
 
-# Do users need some verification ?? probs not
-# Warn people that if they had old roles then unreacting won't work? Commitee is fail safe, could react un react work
-
 #This is where all the on message events happen
 @client.event
 async def on_message(message):
@@ -135,12 +138,38 @@ async def on_message(message):
         for x in message.mentions:
             for y in x.roles:
                 if y.id == COMMITTEE_ROLE_ID:
-                    roles = client.get_guild(GUILD_ID).roles
+                    roles = client.get_guild(GAMESOC_GUILD_ID).roles
                     for i in roles:
                         if i.id == COMMITTEE_ROLE_ID:
                             if mentionedCommitee == False:
                                 await message.channel.send(i.mention)
                                 mentionedCommitee = True
+
+        # Reset counter command for EGM
+        if message.content.upper() == "EGM?RESET" and message.channel.id == EGM_COUNTER_CHANNEL_ID:
+            counterChannel = client.get_channel(EGM_COUNTER_CHANNEL_ID)
+            counterMessage = await counterChannel.get_message(EGM_COUNTER_MESSAGE_ID)
+            dayMessage = await counterChannel.get_message(EGM_DAYS_MESSAGE_ID)
+            await counterMessage.edit(content = 0)
+            await dayMessage.edit(content = datetime.date.today())
+
+        # If an egm is mentioned increment counter and then respond to the message
+        # This isn't perfect as there are some words that contain egm but so be it does it matter
+        # Here is the list: https://www.wordfind.com/contains/Egm/
+        elif "EGM" in message.content.upper():
+            counterChannel = client.get_channel(EGM_COUNTER_CHANNEL_ID)
+            counterMessage = await counterChannel.get_message(EGM_COUNTER_MESSAGE_ID)
+            egmCounter = int(counterMessage.content)
+            egmCounter += 1
+            await message.channel.send("Current EGM counter is at %s this year" % egmCounter)
+            await counterMessage.edit(content = egmCounter)
+
+            # Testing getting days since
+            dayMessage = await counterChannel.get_message(EGM_DAYS_MESSAGE_ID)
+            pastDay = datetime.datetime.strptime(dayMessage.content, '%Y-%m-%d')
+            today = datetime.datetime.today()
+            await message.channel.send("Days since last call for an EGM: %s" % (today - pastDay).days)
+            await dayMessage.edit(content = datetime.date.today())
 
 
 # Run the bot with the token provided
