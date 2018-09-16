@@ -3,7 +3,7 @@ import asyncio
 from login import TOKEN
 
 # Constant-ish :P
-MESSAGE_TO_REACT_TO_ID = 490627055004942337
+MESSAGE_TO_REACT_TO_ID = 490842813517529109
 GUILD_ID = 481147770254786561
 OVERWATCH_EMOJI_ID = 490191693111492628
 LEAGUE_EMOJI_ID = 1
@@ -18,7 +18,7 @@ RAINBOW_SIX_EMOJI_ID = 1
 PUBG_EMOJI_ID = 1
 MTG_EMOJI_ID = 1
 WARFRAME_EMOJI_ID = 1
-OVERWATCH_ROLE_ID = 490191693111492628
+OVERWATCH_ROLE_ID = 1
 LEAGUE_ROLE_ID = 1
 FORTNITE_ROLE_ID = 1
 DOTA_ROLE_ID = 1
@@ -34,7 +34,6 @@ WARFRAME_ROLE_ID = 1
 COMMITTEE_ROLE_ID = 482211682865774592
 
 #TODO CHECK WHICH ROLES ALREADY HAVE AN ICON
-#TODO WORK OUT WHAT VALUES I NEED TO GRAB AND HOW
 #TODO CLEAR REACTIONS IF TOO MANY; WHAT IS TOO MANY
 
 client = discord.Client()
@@ -48,11 +47,9 @@ client = discord.Client()
 # WEDNESDAY NIGHT PC GAMING RANDOMISE PLAYERS
 # EGM Counter
 # Shrek Super Slam
-# YOU NEVER SEE IT COMING - MAYBE MAKE THIS AS A SEPERATE VOICE BOT
 # Can I make it so that whenever I type in the terminal it will talk as the bot
 #   Or maybe allow my bots to be controlled from a master server ???
 # MAKE IT SO THAT IT WILL TALK TO PEOPLE
-# MULTICOLOUR NAME :P
 #===============================================================================
 
 async def add_role_from_id(member, role_id):
@@ -78,6 +75,7 @@ async def on_raw_reaction_add(payload):
         member = client.get_guild(payload.guild_id).get_member(payload.user_id)
         print("reacted to correct message")
         # Check to see which reaction was added
+        # When a recognised reaction is added give the user the relevant role
         if reactionID == OVERWATCH_EMOJI_ID:
             print("Reacted OW")
             await add_role_from_id(member, OVERWATCH_ROLE_ID)
@@ -118,8 +116,11 @@ async def on_raw_reaction_add(payload):
             print("Reacted Warframe")
             await add_role_from_id(member, WARFRAME_ROLE_ID)
         else:
-            print("Reaction not in list")
-            print(reactionID)
+            # Remove the reaction that is not relevant
+            channel = client.get_channel(payload.channel_id)
+            message = await channel.get_message(490842813517529109)
+            await message.remove_reaction(payload.emoji, member)
+            print("Reaction not in list; Removing reaction")
 
 # Do users need some verification ?? probs not
 # Warn people that if they had old roles then unreacting won't work? Commitee is fail safe, could react un react work
