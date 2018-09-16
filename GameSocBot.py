@@ -51,7 +51,6 @@ client = discord.Client()
 # Playing bot!help for help
 # GET ROLES VIA REACTIONS
 # WEDNESDAY NIGHT PC GAMING RANDOMISE PLAYERS
-# EGM Counter
 # Shrek Super Slam
 # Can I make it so that whenever I type in the terminal it will talk as the bot
 #   Or maybe allow my bots to be controlled from a master server ???
