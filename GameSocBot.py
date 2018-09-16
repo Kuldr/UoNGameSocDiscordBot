@@ -121,7 +121,7 @@ async def on_raw_reaction_add(payload):
         else:
             # Remove the reaction that is not relevant
             channel = client.get_channel(payload.channel_id)
-            message = await channel.get_message(490842813517529109)
+            message = await channel.get_message(MESSAGE_TO_REACT_TO_ID)
             await message.remove_reaction(payload.emoji, member)
             print("Reaction not in list; Removing reaction")
 
