@@ -31,7 +31,12 @@ RAINBOW_SIX_ROLE_ID = 1
 PUBG_ROLE_ID = 1
 MTG_ROLE_ID = 1
 WARFRAME_ROLE_ID = 1
+COMMITTEE_ROLE_ID = 482211682865774592
 BOSS_ROLE_ID = 482204111840739339
+
+#TODO CHECK WHICH ROLES ALREADY HAVE AN ICON
+#TODO WORK OUT WHAT VALUES I NEED TO GRAB AND HOW
+#TODO CLEAR REACTIONS IF TOO MANY; WHAT IS TOO MANY
 
 client = discord.Client()
 
@@ -122,11 +127,21 @@ async def on_raw_reaction_add(payload):
 # Warn people that if they had old roles then unreacting won't work? Commitee is fail safe, could react un react work
 
 #This is where all the on message events happen
-# @client.event
-# async def on_message(message):
-
+@client.event
+async def on_message(message):
     # Makes sure the bot can't respond to itself
-    # if client.user.id != message.author.id:
+    if client.user.id != message.author.id:
+        # If commitee member is @'d respond with @committee
+        mentionedCommitee = False
+        for x in message.mentions:
+            for y in x.roles:
+                if y.id == COMMITTEE_ROLE_ID:
+                    roles = client.get_guild(GUILD_ID).roles
+                    for i in roles:
+                        if i.id == COMMITTEE_ROLE_ID:
+                            if mentionedCommitee == False:
+                                await message.channel.send(i.mention)
+                                mentionedCommitee = True
 
 
 # Run the bot with the token provided
