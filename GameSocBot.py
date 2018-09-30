@@ -130,17 +130,18 @@ async def on_raw_reaction_add(payload):
 async def on_message(message):
     # Makes sure the bot can't respond to itself
     if client.user.id != message.author.id:
-        # If commitee member is @'d respond with @committee
-        mentionedCommitee = False
-        for x in message.mentions:
-            for y in x.roles:
-                if y.id == COMMITTEE_ROLE_ID:
-                    roles = client.get_guild(GAMESOC_GUILD_ID).roles
-                    for i in roles:
-                        if i.id == COMMITTEE_ROLE_ID:
-                            if mentionedCommitee == False:
-                                await message.channel.send(i.mention)
-                                mentionedCommitee = True
+        # Removed this feature as it spammed the committee
+        # # If commitee member is @'d respond with @committee
+        # mentionedCommitee = False
+        # for x in message.mentions:
+        #     for y in x.roles:
+        #         if y.id == COMMITTEE_ROLE_ID:
+        #             roles = client.get_guild(GAMESOC_GUILD_ID).roles
+        #             for i in roles:
+        #                 if i.id == COMMITTEE_ROLE_ID:
+        #                     if mentionedCommitee == False:
+        #                         await message.channel.send(i.mention)
+        #                         mentionedCommitee = True
 
         # Reset counter command for EGM
         if message.content.upper() == "EGM?RESET" and message.channel.id == EGM_COUNTER_CHANNEL_ID:
