@@ -154,20 +154,22 @@ async def on_message(message):
         # If an egm is mentioned increment counter and then respond to the message
         # This isn't perfect as there are some words that contain egm but so be it does it matter
         # Here is the list: https://www.wordfind.com/contains/Egm/
-        elif "EGM" in message.content.upper():
-            counterChannel = client.get_channel(EGM_COUNTER_CHANNEL_ID)
-            counterMessage = await counterChannel.get_message(EGM_COUNTER_MESSAGE_ID)
-            egmCounter = int(counterMessage.content)
-            egmCounter += 1
-            await message.channel.send("Current EGM counter is at %s this year" % egmCounter)
-            await counterMessage.edit(content = egmCounter)
 
-            # Testing getting days since
-            dayMessage = await counterChannel.get_message(EGM_DAYS_MESSAGE_ID)
-            pastDay = datetime.datetime.strptime(dayMessage.content, '%Y-%m-%d')
-            today = datetime.datetime.today()
-            await message.channel.send("Days since last call for an EGM: %s" % (today - pastDay).days)
-            await dayMessage.edit(content = datetime.date.today())
+        # FUN IS OVER EGM EASTER EGG IS DONE
+        # elif "EGM" in message.content.upper():
+        #     counterChannel = client.get_channel(EGM_COUNTER_CHANNEL_ID)
+        #     counterMessage = await counterChannel.get_message(EGM_COUNTER_MESSAGE_ID)
+        #     egmCounter = int(counterMessage.content)
+        #     egmCounter += 1
+        #     await message.channel.send("Current EGM counter is at %s this year" % egmCounter)
+        #     await counterMessage.edit(content = egmCounter)
+        #
+        #     # Testing getting days since
+        #     dayMessage = await counterChannel.get_message(EGM_DAYS_MESSAGE_ID)
+        #     pastDay = datetime.datetime.strptime(dayMessage.content, '%Y-%m-%d')
+        #     today = datetime.datetime.today()
+        #     await message.channel.send("Days since last call for an EGM: %s" % (today - pastDay).days)
+        #     await dayMessage.edit(content = datetime.date.today())
 
 
 # Run the bot with the token provided
