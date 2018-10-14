@@ -7,6 +7,8 @@ import datetime
 # Misc
 MESSAGE_TO_REACT_TO_ID = 490888395242078218
 GAMESOC_GUILD_ID = 114348469241643011
+GAMESOC_GENERAL_CHANNEL_ID = 360502416631922690
+KTR_GUILD_ID = 481147770254786561
 EGM_COUNTER_CHANNEL_ID = 490853584347594764
 EGM_COUNTER_MESSAGE_ID = 490854630927106049
 EGM_DAYS_MESSAGE_ID = 490860539950530570
@@ -69,6 +71,17 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+
+@client.event
+async def on_member_join(member):
+    # Special announcement for member 500
+    gameSocServer = client.get_guild(GAMESOC_GUILD_ID)
+    if len(gameSocServer.members) == 501:
+        gameSocGeneralChannel = client.get_channel(GAMESOC_GENERAL_CHANNEL_ID)
+        await gameSocGeneralChannel.send("🎺🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎺")
+        await gameSocGeneralChannel.send("**Congratulations %s, you are our 500th member of the server, you win nothing**" % member.display_name)
+        await gameSocGeneralChannel.send("🎺🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎉🎺")
+        await gameSocGeneralChannel.send("https://www.youtube.com/watch?v=-YCN-a0NsNk")
 
 @client.event
 async def on_raw_reaction_add(payload):
@@ -171,6 +184,9 @@ async def on_message(message):
         #     await message.channel.send("Days since last call for an EGM: %s" % (today - pastDay).days)
         #     await dayMessage.edit(content = datetime.date.today())
 
+        elif message.content.upper() == "GSB?SERVERSIZE":
+            server = message.guild
+            await message.channel.send(len(server.members))
 
 # Run the bot with the token provided
 client.run(TOKEN)
