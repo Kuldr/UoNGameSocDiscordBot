@@ -107,7 +107,8 @@ async def halloweenTime():
                 if HALLOWEEN_MESSAGES_COUNTER < len(HALLOWEEN_MESSAGES):
                     await halloweenChannel.send(HALLOWEEN_MESSAGES[HALLOWEEN_MESSAGES_COUNTER])
                     HALLOWEEN_MESSAGES_COUNTER = HALLOWEEN_MESSAGES_COUNTER + 1
-        await asyncio.sleep(5400) # task runs every 3*60*60/2 seconds (1 and 1/2 hours)
+        await asyncio.sleep(5000)
+        # task runs every 3*60*60/2 seconds (1 and 1/2 hours) (16 messages over 24 hour period) (slightly less)
 
 # When the client is set up and conneted it will print to the system running
 #   the bot that it has connected
