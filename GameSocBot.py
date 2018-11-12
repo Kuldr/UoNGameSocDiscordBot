@@ -2,6 +2,7 @@ import discord
 import asyncio
 from login import TOKEN
 import datetime
+import random
 
 #===============================CONSTANT-ISH====================================
 # Misc
