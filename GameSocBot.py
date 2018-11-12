@@ -38,6 +38,8 @@ PUBG_ROLE_ID = 360238836623605760
 MTG_ROLE_ID = 474253927278182410
 WARFRAME_ROLE_ID = 488835550258659348
 COMMITTEE_ROLE_ID = 471020920753094656
+# User IDs
+ROMPAFROLIC_USER_ID = 140625437498802176
 
 #==============================GLOBAL VARS======================================
 
@@ -133,6 +135,10 @@ async def on_message(message):
         if message.content.upper() == "GSB?SERVERSIZE":
             server = message.guild
             await message.channel.send(len(server.members))
+        # 1% chance of responding to a message from rupert with /s
+        elif message.author.id == ROMPAFROLIC_USER_ID:
+            if random.random() < 0.01:
+                await message.channel.send("/s")
 
 # Run the bot with the token provided
 client.run(TOKEN)
