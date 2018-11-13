@@ -75,70 +75,73 @@ async def on_ready():
 
 @client.event
 async def on_raw_reaction_add(payload):
-    # Check that the reaction was added to the message that I want to checks
-    if payload.message_id == MESSAGE_TO_REACT_TO_ID:
-        reactionID = payload.emoji.id
-        member = client.get_guild(payload.guild_id).get_member(payload.user_id)
-        print("reacted to correct message")
-        # Check to see which reaction was added
-        # When a recognised reaction is added give the user the relevant role
-        if reactionID == OVERWATCH_EMOJI_ID:
-            print("Reacted OW")
-            await add_role_from_id(member, OVERWATCH_ROLE_ID)
-        elif reactionID == LEAGUE_EMOJI_ID:
-            print("Reacted League")
-            await add_role_from_id(member, LEAGUE_ROLE_ID)
-        elif reactionID == FORTNITE_EMOJI_ID:
-            print("Reacted Fortnite")
-            await add_role_from_id(member, FORTNITE_ROLE_ID)
-        elif reactionID == DOTA_EMOJI_ID:
-            print("Reacted DotA")
-            await add_role_from_id(member, DOTA_ROLE_ID)
-        elif reactionID == CSGO_EMOJI_ID:
-            print("Reacted CSGO")
-            await add_role_from_id(member, CSGO_ROLE_ID)
-        elif reactionID == WOW_EMOJI_ID:
-            print("Reacted WoW")
-            await add_role_from_id(member, WOW_ROLE_ID)
-        elif reactionID == ROCKET_LEAGUE_EMOJI_ID:
-            print("Reacted Rocket League")
-            await add_role_from_id(member, ROCKET_LEAGUE_ROLE_ID)
-        elif reactionID == HEARTHSTONE_EMOJI_ID:
-            print("Reacted Hearthstone")
-            await add_role_from_id(member, HEARTHSTONE_ROLE_ID)
-        elif reactionID == DESTINY_EMEOJI_ID:
-            print("Reacted Destiny")
-            await add_role_from_id(member, DESTINY_ROLE_ID)
-        elif reactionID == RAINBOW_SIX_EMOJI_ID:
-            print("Reacted Rainbow Six Siege")
-            await add_role_from_id(member, RAINBOW_SIX_ROLE_ID)
-        elif reactionID == PUBG_EMOJI_ID:
-            print("Reacted PUBG")
-            await add_role_from_id(member, PUBG_ROLE_ID)
-        elif reactionID == MTG_EMOJI_ID:
-            print("Reacted MTG")
-            await add_role_from_id(member, MTG_ROLE_ID)
-        elif reactionID == WARFRAME_EMOJI_ID:
-            print("Reacted Warframe")
-            await add_role_from_id(member, WARFRAME_ROLE_ID)
-        else:
-            # Remove the reaction that is not relevant
-            channel = client.get_channel(payload.channel_id)
-            message = await channel.get_message(MESSAGE_TO_REACT_TO_ID)
-            await message.remove_reaction(payload.emoji, member)
-            print("Reaction not in list; Removing reaction")
+    # Need to make bot not react to its own reactions
+    if client.user.id != payload.user_id:
+        # Check that the reaction was added to the message that I want to checks
+        if payload.message_id == MESSAGE_TO_REACT_TO_ID:
+            reactionID = payload.emoji.id
+            member = client.get_guild(payload.guild_id).get_member(payload.user_id)
+            print("reacted to correct message")
+            # Check to see which reaction was added
+            # When a recognised reaction is added give the user the relevant role
+            if reactionID == OVERWATCH_EMOJI_ID:
+                print("Reacted OW")
+                await add_role_from_id(member, OVERWATCH_ROLE_ID)
+            elif reactionID == LEAGUE_EMOJI_ID:
+                print("Reacted League")
+                await add_role_from_id(member, LEAGUE_ROLE_ID)
+            elif reactionID == FORTNITE_EMOJI_ID:
+                print("Reacted Fortnite")
+                await add_role_from_id(member, FORTNITE_ROLE_ID)
+            elif reactionID == DOTA_EMOJI_ID:
+                print("Reacted DotA")
+                await add_role_from_id(member, DOTA_ROLE_ID)
+            elif reactionID == CSGO_EMOJI_ID:
+                print("Reacted CSGO")
+                await add_role_from_id(member, CSGO_ROLE_ID)
+            elif reactionID == WOW_EMOJI_ID:
+                print("Reacted WoW")
+                await add_role_from_id(member, WOW_ROLE_ID)
+            elif reactionID == ROCKET_LEAGUE_EMOJI_ID:
+                print("Reacted Rocket League")
+                await add_role_from_id(member, ROCKET_LEAGUE_ROLE_ID)
+            elif reactionID == HEARTHSTONE_EMOJI_ID:
+                print("Reacted Hearthstone")
+                await add_role_from_id(member, HEARTHSTONE_ROLE_ID)
+            elif reactionID == DESTINY_EMEOJI_ID:
+                print("Reacted Destiny")
+                await add_role_from_id(member, DESTINY_ROLE_ID)
+            elif reactionID == RAINBOW_SIX_EMOJI_ID:
+                print("Reacted Rainbow Six Siege")
+                await add_role_from_id(member, RAINBOW_SIX_ROLE_ID)
+            elif reactionID == PUBG_EMOJI_ID:
+                print("Reacted PUBG")
+                await add_role_from_id(member, PUBG_ROLE_ID)
+            elif reactionID == MTG_EMOJI_ID:
+                print("Reacted MTG")
+                await add_role_from_id(member, MTG_ROLE_ID)
+            elif reactionID == WARFRAME_EMOJI_ID:
+                print("Reacted Warframe")
+                await add_role_from_id(member, WARFRAME_ROLE_ID)
+            else:
+                # Remove the reaction that is not relevant
+                channel = client.get_channel(payload.channel_id)
+                message = await channel.get_message(MESSAGE_TO_REACT_TO_ID)
+                await message.remove_reaction(payload.emoji, member)
+                print("Reaction not in list; Removing reaction")
+
 
 #This is where all the on message events happen
 @client.event
 async def on_message(message):
     # Makes sure the bot can't respond to itself
     if client.user.id != message.author.id:
-        if message.content.upper() == "GSB?SERVERSIZE":
+        if message.content.upper() == "GSB?SERVERSIZE" or message.content.upper() == "GSB!SERVERSIZE":
             server = message.guild
             await message.channel.send(len(server.members))
         # 1% chance of responding to a message from rupert with /s
         elif message.author.id == ROMPAFROLIC_USER_ID:
-            if random.random() < 0.01:
+            if random.random() < 0.05:
                 await message.channel.send("/s")
 
 # Run the bot with the token provided
