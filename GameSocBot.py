@@ -55,7 +55,7 @@ startCasinoString = ("Howdy everyone, welcome to the betting ring!\n"
 BETTING_MESSAGE_ID = 0
 BETTING_RESPONCE_MESSAGE_ID = 0 # MAYBE IMPLEMENT THIS
 SCORE_MESSAGE_ID = 0
-SCORES = {140625437498802176: 2000, 482545753970049034: 1000, 212960804792827904: 3000} #Form {ID : SCORE}
+SCORES = {} #Form {ID : SCORE}
 BETS = {} #Form {ID : SIDE} SIDE is either "L" or "R"
 BETTING_OPEN = False
 
@@ -231,17 +231,18 @@ async def on_message(message):
             global SCORE_CHANNEL_ID
             global SCORE_MESSAGE_ID
             if BETTING_CHANNEL_ID == 0:
-                gameSocServer = client.get_guild(KTR_GUILD_ID)
+                gameSocServer = client.get_guild(GAMESOC_GUILD_ID)
                 casinoCategory = await gameSocServer.create_category("GameSoc Casino")
                 bettingChannel = await gameSocServer.create_text_channel('Casino Floor', category = casinoCategory)
                 scoreChannel = await gameSocServer.create_text_channel('High Rollers', category = casinoCategory)
                 await gameSocServer.create_text_channel('Casino Lounge', category = casinoCategory)
                 BETTING_CHANNEL_ID = bettingChannel.id
                 SCORE_CHANNEL_ID = scoreChannel.id
-                everyone = client.get_guild(KTR_GUILD_ID).default_role
+                everyone = client.get_guild(GAMESOC_GUILD_ID).default_role
                 await bettingChannel.set_permissions(everyone, read_messages=True, send_messages=False)
                 await scoreChannel.set_permissions(everyone, read_messages=True, send_messages=False, add_reactions=False) #SET TO NO REACTIONS
                 await bettingChannel.send(startCasinoString)
+                await bettingChannel.send("The casino will open at 18:45 but the floor will be open for the rest of the evening")
                 scoreMessage = await scoreChannel.send("```₲12345 | Username\n-----------------\n```")
                 SCORE_MESSAGE_ID = scoreMessage.id
             else:
