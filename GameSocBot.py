@@ -6,8 +6,6 @@ from login import TOKEN
 # Misc
 MESSAGE_TO_REACT_TO_ID = 490888395242078218
 GAMESOC_GUILD_ID = 114348469241643011
-GAMESOC_GENERAL_CHANNEL_ID = 360502416631922690
-KTR_GUILD_ID = 481147770254786561
 # Emoji IDs
 OVERWATCH_EMOJI_ID = 490883226454327316
 LEAGUE_EMOJI_ID = 490883189896642560
@@ -45,6 +43,7 @@ client = discord.Client()
 
 #===============================================================================
 
+# Helper function that adds the specified role (w/ role_id) to the user
 async def add_role_from_id(member, role_id):
     roles = client.get_guild(GAMESOC_GUILD_ID).roles
     for i in roles:
@@ -60,6 +59,8 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
+# If a user reacts to the correct message, gives the user the relevant role
+#   or removes the reaction
 @client.event
 async def on_raw_reaction_add(payload):
     # Need to make bot not react to its own reactions
@@ -117,7 +118,7 @@ async def on_raw_reaction_add(payload):
                 await message.remove_reaction(payload.emoji, member)
                 print("Reaction not in list; Removing reaction")
 
-#This is where all the on message events happen
+#Simple command to check the server size
 @client.event
 async def on_message(message):
     # Makes sure the bot can't respond to itself
