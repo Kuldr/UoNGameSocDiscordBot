@@ -6,6 +6,7 @@ from login import TOKEN
 # Misc
 MESSAGE_TO_REACT_TO_ID = 490888395242078218
 GAMESOC_GUILD_ID = 114348469241643011
+ROLEALLOCATION_CHANNEL_ID = 490887919490433026
 # Emoji IDs
 LEAGUE_EMOJI_ID = 490883189896642560
 DOTA_EMOJI_ID = 490883165884514334
@@ -15,19 +16,23 @@ ROCKET_LEAGUE_EMOJI_ID = 490883269605195788
 HEARTHSTONE_EMOJI_ID = 490883182397227009
 RAINBOW_SIX_EMOJI_ID = 490883260193177640
 PUBG_EMOJI_ID = 490883251142000640
+FG_EMOJI_ID = 612061212812902453
+WOW_EMOJI_ID = 613489408133562368
 FORTNITE_EMOJI_ID = 490883173551570945
 DESTINY_EMEOJI_ID = 612077075356057628
 # Role IDs
-LEAGUE_ROLE_ID = 360239401839624214
-DOTA_ROLE_ID = 360464804865114115
-OVERWATCH_ROLE_ID = 360239768317067264
-CSGO_ROLE_ID = 360239648162709505
-ROCKET_LEAGUE_ROLE_ID = 360465836852641792
-HEARTHSTONE_ROLE_ID = 360467250634817536
-RAINBOW_SIX_ROLE_ID = 420351992133582861
-PUBG_ROLE_ID = 360238836623605760
-FORTNITE_ROLE_ID = 420236263233159169
-DESTINY_ROLE_ID = 372823107905257492
+LEAGUE_ROLE_ID = 613487966316134411
+DOTA_ROLE_ID = 613488090933231655
+OVERWATCH_ROLE_ID = 613488209057415198
+CSGO_ROLE_ID = 613488370919800950
+ROCKET_LEAGUE_ROLE_ID = 613488595054886951
+HEARTHSTONE_ROLE_ID = 613488708490100757
+RAINBOW_SIX_ROLE_ID = 613488853738717195
+PUBG_ROLE_ID = 613488962576711691
+FG_ROLE_ID = 613493086357815296
+WOW_ROLE_ID = 613492918946103336
+FORTNITE_ROLE_ID = 613489034261430376
+DESTINY_ROLE_ID = 613489114851049491
 # MISC
 GAMESOCBOT_ROLE_ID = 490890046405345312
 
@@ -90,6 +95,12 @@ async def on_raw_reaction_add(payload):
             elif reactionID == PUBG_EMOJI_ID:
                 print("Reacted PUBG")
                 await add_role_from_id(member, PUBG_ROLE_ID)
+            elif reactionID == FG_EMOJI_ID:
+                print("Reacted Fighting Game")
+                await add_role_from_id(member, FG_ROLE_ID)
+            elif reactionID == WOW_EMOJI_ID:
+                print("Reacted PUBG")
+                await add_role_from_id(member, WOW_ROLE_ID)
             elif reactionID == FORTNITE_EMOJI_ID:
                 print("Reacted Fortnite")
                 await add_role_from_id(member, FORTNITE_ROLE_ID)
@@ -98,8 +109,8 @@ async def on_raw_reaction_add(payload):
                 await add_role_from_id(member, DESTINY_ROLE_ID)
             else:
                 # Remove the reaction that is not relevant
-                channel = client.get_channel(payload.channel_id)
-                message = await channel.get_message(MESSAGE_TO_REACT_TO_ID)
+                # channel = client.get_channel(payload.channel_id)
+                message = await client.get_channel(ROLEALLOCATION_CHANNEL_ID).fetch_message(MESSAGE_TO_REACT_TO_ID)
                 await message.remove_reaction(payload.emoji, member)
                 print("Reaction not in list; Removing reaction")
 
