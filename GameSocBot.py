@@ -44,16 +44,6 @@ GAMESOCBOT_ROLE_ID = 490890046405345312
 client = discord.Client()
 
 #===============================================================================
-# IDEAS
-# Standard help command - pm help command
-# Bot overview channel
-# Playing bot!help for help
-# WEDNESDAY NIGHT PC GAMING RANDOMISE PLAYERS
-# Shrek Super Slam
-# Can I make it so that whenever I type in the terminal it will talk as the bot
-#   Or maybe allow my bots to be controlled from a master server ???
-# MAKE IT SO THAT IT WILL TALK TO PEOPLE
-#===============================================================================
 
 async def add_role_from_id(member, role_id):
     roles = client.get_guild(GAMESOC_GUILD_ID).roles
